@@ -408,5 +408,30 @@ function tf_placeholder_image($args = null){
 }
 
 
+/*	=COLUMNS SHORTCODE
+------------------------------------*/
 
+function tf_cols_shortcode( $atts, $content = null ) {
+	extract( shortcode_atts( array(
+	'position' => '', 
+	'width' => '6',
+	), $atts ) );
 
+	$output = '<div class="grid_' . $width;
+	if($position){
+		switch ($position) {
+	  	case 'last':
+	    	$position = ' omega';
+	      break;
+	    case 'first':
+	      $position = ' alpha';
+	      break;
+	    default:
+	      $position = NULL;
+		}
+		$output .= $position;
+	}
+	$output .= '">' . do_shortcode($content) . '</div>';
+	return $output;
+}
+add_shortcode('col', 'tf_cols_shortcode');
