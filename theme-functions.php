@@ -14,6 +14,7 @@
  * - tf_gravity_forms
  * - tf_disable_autop
  * - tf_image_resize
+ * - tf_cols_shortcode
  */
 
 
@@ -376,7 +377,6 @@ function tf_image_resize( $attach_id = null, $img_url = null, $width, $height, $
 }
 
 
-
 /*	=PLACEHOLDER IMAGE
 ------------------------------------*/
 
@@ -435,3 +435,18 @@ function tf_cols_shortcode( $atts, $content = null ) {
 	return $output;
 }
 add_shortcode('col', 'tf_cols_shortcode');
+
+
+/*	=GET SCREENSHOT
+------------------------------------*/
+
+function tf_get_screenshot($args = null){
+
+	$default_args = array(
+		'width'				=> null, 
+		'url' 				=> null
+	);	
+	$args = array_merge($default_args, $args);
+		
+	return "http://s.wordpress.com/mshots/v1/" . urlencode($args['url']) ."?w=$width";
+}
