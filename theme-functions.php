@@ -450,3 +450,37 @@ function tf_get_screenshot($args = null){
 		
 	return "http://s.wordpress.com/mshots/v1/" . urlencode($args['url']) ."?w=$width";
 }
+
+
+/*	=LOAD CSS
+------------------------------------*/
+
+function tf_load_css( $styles = null ){
+	if( $styles && ! is_admin() ){		
+		foreach($styles as $style){
+			$style = explode( '/', $style );
+			$array_len = count( $style );
+			$filename = str_replace('.css', '' , $style[$array_len - 1]);
+			$path = implode('/', str_replace('.css', '' , $style));
+			wp_register_style( $filename , get_template_directory_uri() . '/' . $path . '.css');
+			wp_enqueue_style( $filename );		
+		}
+	}
+}
+
+
+/*	=LOAD JS
+------------------------------------*/
+
+function tf_load_js( $scripts = null ){
+	if( $scripts && ! is_admin() ){		
+		foreach($scripts as $script){
+			$script = explode( '/', $script );
+			$array_len = count( $script );
+			$filename = str_replace('.js', '' , $script[$array_len - 1]);
+			$path = implode('/', str_replace('.js', '' , $script));
+			wp_register_script( $filename , get_template_directory_uri() . '/' . $path . '.js');
+			wp_enqueue_script( $filename );		
+		}
+	}
+}
