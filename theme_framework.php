@@ -2,7 +2,7 @@
 /*
 Plugin Name: Theme Framework
 Description: Adds a bunch of useful tools and functions for any Wordpress theme
-Version: 1.0
+Version: 1.1
 Author: Adam Turtle
 Author URI: http://adamturtle.com
 */
@@ -16,13 +16,10 @@ Author URI: http://adamturtle.com
 	
 	$theme_settings = array(
 		'disable_wordpress_upgrade_notices'	=> false,
-		'show_theme_options_page'						=> true
+		'show_theme_options_page'						=> false
 	);
 	
-	
-	
-	
-	
+
 	
 	/* Don't edit anything beyond here. --------------------------------------------*/
 
@@ -39,4 +36,4 @@ Author URI: http://adamturtle.com
 	}
 	
 	// Load theme functions
-	include_once($plugin_path . '/theme-functions.php');
+	include_once($plugin_path . '/class.themeframework.php');

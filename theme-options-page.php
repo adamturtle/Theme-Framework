@@ -10,10 +10,11 @@ require_once($plugin_path . '/adminpage.class.php');
 
 $options = new SubPage('theme', array(
 	'menu_title' => 'Theme Setup',
-	'page_title' => 'Knossos Setup',
+	'page_title' => 'Theme Setup',
 	'menu_slug' => 'theme_setup',
 ));
 
+/*
 $options->addTitle('Social Accounts');
 
 	$options->addInput(array(
@@ -55,3 +56,4 @@ $options->addTitle('Gallery');
 			24 => 24
 		)	
 	));
+*/
