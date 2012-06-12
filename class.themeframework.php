@@ -175,7 +175,7 @@ class Theme_Framework
 
 	/*	=NATIVE WP IMAGE RESIZING
 	------------------------------------*/	
-	public function resize( $attach_id = null, $img_url = null, $width, $height, $crop = false, $jpeg_quality = 90 ){
+	public function img( $attach_id = null, $img_url = null, $width, $height, $crop = false, $jpeg_quality = 90 ){
 	
 		// this is an attachment, so we have the ID
 		if ( $attach_id ) {
@@ -272,6 +272,38 @@ class Theme_Framework
 		return $vt_image;
 	}
 	
+
+	/*	=EXTERNAL IMAGE RESIZING
+	------------------------------------*/	
+	public function resize( $width = null, $height = null, $url = null ){
+
+		$url = 'http://e.phpfogapp.com/';
+		
+		$user_args = array(
+			'width'  => $width,
+			'height' => $height,
+			'url'    => $url
+		);
+
+		$default_args = array(
+			'width' 			=> 100, 
+			'height' 			=> null, 
+			'url' 				=> null
+		);
+
+		$args = array_merge($default_args, $user_args);
+
+		if( $args['url'] ) {
+			if( $args['width'] ){
+				return $url . $args['width'] . 'x' . $args['height'] . '/' . $args['url'];
+			} else {
+				return $url . $args['width'] . '/' . $args['url'];
+			}
+		} else {
+			wp_error('No url specified for Theme Framework "resize" method.');
+		}
+	}
+
 	
 	/*	=PLACEHOLDER IMAGE
 	------------------------------------*/	
@@ -295,10 +327,10 @@ class Theme_Framework
 		
 		$url = $image_host . "/" . $width . "x" . $height . "/" . $args['bg_colour'] . "/" . $args['text_colour'] . "&text=" . $args['text'];
 		if($args['url']){
-			return '<img class="'. $args['class'] .'" width=' . $width . ' height="'. $height .'" src="' . $url . '" rel="#'. $args['rel'] .'" alt="'. $args['text'] .'" />';
+			return '<img class="'. $args['class'] .'" width="' . $width . '" height="'. $height .'" src="' . $url . '" rel="#'. $args['rel'] .'" alt="'. $args['text'] .'" />';
 		}
 		else {
-			return '<img class="'. $args['class'] .'" width=' . $width . ' height="'. $height .'" src="' . $url . '" />';
+			return '<img class="'. $args['class'] .'" width="' . $width . '" height="'. $height .'" src="' . $url . '" />';
 		}
 	}
 	
@@ -308,11 +340,20 @@ class Theme_Framework
 	public function css( $styles = null ){
 		if( $styles && ! is_admin() ){		
 			foreach($styles as $style){
+				if( substr($style, 0, 4 ) == "http" ){
+					$url = $style;
+				}
+				
 				$style = explode( '/', $style );
 				$array_len = count( $style );
 				$filename = str_replace('.css', '' , $style[$array_len - 1]);
-				$path = implode('/', str_replace('.css', '' , $style));
-				wp_register_style( $filename , get_template_directory_uri() . '/' . $path . '.css');
+				if( $url ){
+					wp_register_style( $filename , $url);				
+					$url = null;					
+				} else {
+					$path = implode('/', str_replace('.css', '' , $style));
+					wp_register_style( $filename , get_template_directory_uri() . '/' . $path . '.css');				
+				}
 				wp_enqueue_style( $filename );		
 			}
 		}
@@ -324,14 +365,24 @@ class Theme_Framework
 	public function js( $scripts = null ){
 		if( $scripts && ! is_admin() ){		
 			foreach($scripts as $script){
+				if( substr($script, 0, 4 ) == "http" ){
+					$url = $script;
+				}			
 				$script = explode( '/', $script );
 				$array_len = count( $script );
 				$filename = str_replace('.js', '' , $script[$array_len - 1]);
-				$path = implode('/', str_replace('.js', '' , $script));
-				wp_register_script( $filename , get_template_directory_uri() . '/' . $path . '.js');
+				
+				if( $url ){
+					wp_register_script( $filename , $url);
+					$url = null;
+				} else {				
+					$path = implode('/', str_replace('.js', '' , $script));
+					wp_register_script( $filename , get_template_directory_uri() . '/' . $path . '.js');
+				}
 				wp_enqueue_script( $filename );		
 			}
 		}
+	}
 	}
 	
 	
