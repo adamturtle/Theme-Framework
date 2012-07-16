@@ -382,8 +382,7 @@ class Theme_Framework
 				wp_enqueue_script( $filename );		
 			}
 		}
-	}
-	}
+	}	
 	
 	
 	/*	=PRETTY PRINT_R
